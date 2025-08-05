@@ -30,10 +30,14 @@ def plot_buoy_data():
     axis_labels = []
 
     for buoy in buoys_geo.iterfeatures():
-        ax.annotate(
-            int(buoy["id"]) + 1,
-            xy=(buoy["properties"]["longitude"], buoy["properties"]["latitude"]),
-        )
+
+        # buoy's 5 and 6 are almost on top of 13 and 7, plot their labels below them to avoid a clash
+        if int(buoy["id"])+1 == 5 or int(buoy["id"])+1 == 6:
+            ax.annotate(int(buoy["id"])+1, xy=(buoy["properties"]["longitude"]-0.2, buoy["properties"]["latitude"]-0.4))    
+        else:
+            # plot all the over labels above the buoy
+            ax.annotate(int(buoy["id"])+1, xy=(buoy["properties"]["longitude"]-0.2, buoy["properties"]["latitude"]+0.2))
+        
         axis_labels.append(f"{int(buoy['id'])+1}: {buoy['properties']['Name']}")
 
     labels = AnchoredText(
